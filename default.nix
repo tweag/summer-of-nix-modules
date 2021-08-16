@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{ lib, config, ... }: {
 
   options = {
     generate.script = lib.mkOption {
@@ -12,7 +12,9 @@
 
   config = {
     generate.script = ''
-      map size=640x640 scale=2 | icat
+      map ${lib.concatStringsSep " "
+            config.generate.requestParams
+           } | icat
     '';
 
     generate.requestParams = [
