@@ -7,7 +7,9 @@
   };
 
   config = {
-    generate.script = 42;
+    generate.script = ''
+      map size=640x640 scale=2 | icat
+    '';
   };
   
 }
