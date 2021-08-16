@@ -5,5 +5,9 @@
       type = lib.types.lines;
     };
   };
+
+  config = {
+    generate.script = 42;
+  };
   
 }
