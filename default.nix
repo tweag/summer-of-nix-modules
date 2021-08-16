@@ -14,6 +14,11 @@
         type = lib.types.nullOr lib.types.int;
         default = 2;
       };
+
+      center = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = "switzerland";
+      };
     };
   };
 
@@ -29,6 +34,10 @@
       "scale=2"
       (lib.mkIf (config.map.zoom != null)
         "zoom=${toString config.map.zoom}")
+      (lib.mkIf (config.map.center != null)
+        "center=\"$(geocode ${
+          lib.escapeShellArg config.map.center
+        })\"")
     ];
   };
   
