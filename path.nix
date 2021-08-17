@@ -17,6 +17,17 @@ in {
   };
 
   config = {
+
+    map.paths = map (user: {
+      locations = [
+        user.departure.location
+        user.arrival.location
+      ];
+    }) (lib.filter (user:
+      user.departure.location != null
+      && user.arrival.location != null
+    ) (lib.attrValues config.users));
+
     generate.requestParams = let
       attrForLocation = loc:
         "$(geocode ${lib.escapeShellArg loc})";
