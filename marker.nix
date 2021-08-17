@@ -23,6 +23,14 @@ in {
       { location = "new york"; }
     ];
 
+    map.center = lib.mkIf
+      (lib.length config.map.markers >= 1)
+      null;
+
+    map.zoom = lib.mkIf
+      (lib.length config.map.markers >= 2)
+      null;
+
     generate.requestParams = let
       paramForMarker = marker:
         let
