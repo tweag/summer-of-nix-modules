@@ -1,5 +1,9 @@
 { lib, config, ... }: {
 
+  imports = [
+    ./marker.nix
+  ];
+
   options = {
     generate.script = lib.mkOption {
       type = lib.types.lines;
