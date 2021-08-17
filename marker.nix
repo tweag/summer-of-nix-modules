@@ -7,6 +7,12 @@ let
         type = lib.types.nullOr lib.types.str;
         default = null;
       };
+
+      style.label = lib.mkOption {
+        type = lib.types.nullOr
+          (lib.types.strMatching "[A-Z0-9]");
+        default = null;
+      };
     };
   };
 
@@ -52,7 +58,10 @@ in {
       paramForMarker = marker:
         let
           attributes =
-            [
+            lib.optional
+              (marker.style.label != null)
+              "label:${marker.style.label}"
+            ++ [
               "$(geocode ${
                 lib.escapeShellArg marker.location
               })"
