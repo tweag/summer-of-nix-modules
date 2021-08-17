@@ -7,6 +7,13 @@ let
     (builtins.match "[^A-Z0-9]*([A-Z0-9]).*"
     (lib.toUpper str));
 
+  # Either a color name or `0xRRGGBB`
+  colorType = lib.types.either
+    (lib.types.strMatching "0x[0-9A-F]{6}")
+    (lib.types.enum [
+      "black" "brown" "green" "purple" "yellow"
+      "blue" "gray" "orange" "red" "white" ]);
+
   markerType = lib.types.submodule {
     options = {
       location = lib.mkOption {
@@ -18,6 +25,11 @@ let
         type = lib.types.nullOr
           (lib.types.strMatching "[A-Z0-9]");
         default = null;
+      };
+
+      style.color = lib.mkOption {
+        type = colorType;
+        default = "red";
       };
     };
   };
@@ -73,6 +85,7 @@ in {
               (marker.style.label != null)
               "label:${marker.style.label}"
             ++ [
+              "color:${marker.style.color}"
               "$(geocode ${
                 lib.escapeShellArg marker.location
               })"
