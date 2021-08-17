@@ -17,4 +17,26 @@ in {
     };
   };
 
+  config = {
+
+    map.markers = [
+      { location = "new york"; }
+    ];
+
+    generate.requestParams = let
+      paramForMarker = marker:
+        let
+          attributes =
+            [
+              "$(geocode ${
+                lib.escapeShellArg marker.location
+              })"
+            ];
+        in "markers=${
+          lib.concatStringsSep "\\|" attributes
+        }";
+    in map paramForMarker config.map.markers;
+
+  };
+
 }
