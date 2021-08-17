@@ -9,9 +9,24 @@ let
       };
     };
   };
+
+  userType = lib.types.submodule {
+    options = {
+      departure = lib.mkOption {
+        type = markerType;
+        default = {};
+      };
+    };
+  };
+
 in {
 
   options = {
+
+    users = lib.mkOption {
+      type = lib.types.attrsOf userType;
+    };
+
     map.markers = lib.mkOption {
       type = lib.types.listOf markerType;
     };
@@ -19,9 +34,11 @@ in {
 
   config = {
 
-    map.markers = [
-      { location = "new york"; }
-    ];
+    map.markers = lib.filter
+      (marker: marker.location != null)
+      (lib.concatMap (user: [
+        user.departure
+      ]) (lib.attrValues config.users));
 
     map.center = lib.mkIf
       (lib.length config.map.markers >= 1)
