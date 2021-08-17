@@ -56,6 +56,10 @@ let
 
 in {
 
+  imports = [
+    ./path.nix
+  ];
+
   options = {
 
     users = lib.mkOption {
